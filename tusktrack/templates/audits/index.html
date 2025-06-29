@@ -1,7 +1,81 @@
-<!DOCTYPE html>
-<html>
-<head><title>TuskTrack</title></head>
-<body>
-  <h1>Willkommen bei TuskTrack</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">Dashboard</h1>
+
+  <div class="row g-4">
+    <!-- Overview cards -->
+    <div class="col-md-4">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Open Audits</h5>
+          <p class="card-text display-5">{{ open_audits_count }}</p>
+          <a href="{% url 'audit-list' %}?status=open" class="btn btn-light btn-sm">View details</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Closed Audits</h5>
+          <p class="card-text display-5">{{ closed_audits_count }}</p>
+          <a href="{% url 'audit-list' %}?status=closed" class="btn btn-light btn-sm">View details</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">Audits This Week</h5>
+          <p class="card-text display-5">{{ audits_this_week }}</p>
+          <a href="{% url 'audit-list' %}?period=this_week" class="btn btn-light btn-sm">View details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4" />
+
+  <!-- Recent audits table -->
+  <h2>Recent Audits</h2>
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Audit Name</th>
+        <th>Status</th>
+        <th>Responsible</th>
+        <th>Planned For</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for audit in recent_audits %}
+      <tr>
+        <td>{{ audit.name }}</td>
+        <td>
+          {% if audit.status == 'open' %}
+            <span class="badge bg-primary">Open</span>
+          {% elif audit.status == 'closed' %}
+            <span class="badge bg-success">Closed</span>
+          {% else %}
+            <span class="badge bg-secondary">{{ audit.status }}</span>
+          {% endif %}
+        </td>
+        <td>{{ audit.responsible.username }}</td>
+        <td>{{ audit.planned_date|date:"d.m.Y" }}</td>
+        <td>
+          <a href="{% url 'audit-detail' audit.id %}" class="btn btn-sm btn-outline-primary">View</a>
+          <a href="{% url 'audit-edit' audit.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center">No audits found</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

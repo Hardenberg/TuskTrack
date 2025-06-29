@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>Create New Audit</h1>
+  <form>
+    <div class="mb-3">
+      <label for="auditName" class="form-label">Audit Name</label>
+      <input type="text" class="form-control" id="auditName" placeholder="Audit name">
+    </div>
+
+    <div class="mb-3">
+      <label for="auditStatus" class="form-label">Status</label>
+      <select class="form-select" id="auditStatus">
+        <option value="" selected>Please select</option>
+        <option value="open">Open</option>
+        <option value="closed">Done</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="auditResponsible" class="form-label">Responsible</label>
+      <select class="form-select" id="auditResponsible">
+        <option value="" selected>Please select...</option>
+        <option value="user1">John Doe</option>
+        <option value="user2">Johanna Doe</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="auditDate" class="form-label">Planned Date</label>
+      <input type="date" class="form-control" id="auditDate">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="reset" class="btn btn-secondary ms-2">Reset</button>
+  </form>
+</div>
+{% endblock %}

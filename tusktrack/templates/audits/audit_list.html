@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>Audit Overview</h1>
+  <a href="{% url 'audit-create' %}" class="btn btn-success mb-3">Create New Audit</a>
+
+  <table class="table table-hover table-bordered align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Responsible</th>
+        <th>Planned Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for audit in audits %}
+      <tr>
+        <td>{{ audit.name }}</td>
+        <td>
+          {% if audit.status == 'open' %}
+            <span class="badge bg-primary">Open</span>
+          {% elif audit.status == 'closed' %}
+            <span class="badge bg-success">Done</span>
+          {% else %}
+            <span class="badge bg-secondary">{{ audit.status }}</span>
+          {% endif %}
+        </td>
+        <td>{{ audit.responsible.username }}</td>
+        <td>{{ audit.planned_date|date:"d.m.Y" }}</td>
+        <td>
+          <a href="{% url 'audit-detail' audit.id %}" class="btn btn-sm btn-outline-primary">View</a>
+          <a href="{% url 'audit-edit' audit.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+          <!-- Optional: Delete button with modal -->
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center">No audits found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
